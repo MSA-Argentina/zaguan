@@ -16,7 +16,7 @@ class WebKitMethods(object):
         #settings.set_property('enable-xss-auditor', False)
         # todas las settings en http://webkitgtk.org/reference/webkitgtk/stable/WebKitWebSettings.html
         settings.set_property('enable-default-context-menu', False)
-
+        settings.set_property('enable-accelerated-compositing', True)
         webview = webkit.WebView()
         webview.set_settings(settings)
         return webview

@@ -5,6 +5,8 @@ import thread
 import os
 import urllib
 
+from time import sleep
+
 from zaguan.examples.colors.controller import ColorsController
 
 
@@ -21,7 +23,7 @@ def load_window():
     browser = controller.get_browser(uri)
     window.set_border_width(0)
     window.add(browser)
-
+    sleep(1)
     window.show_all()
     window.show()
     gtk.main()

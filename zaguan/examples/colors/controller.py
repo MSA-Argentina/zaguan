@@ -29,18 +29,20 @@ class ColorsController(WebContainerController):
                     data = "null"
 
                 data = from_json(urllib.unquote(data))
-                print "ACTIONNNNNNN", action, data
                 self.process_action(action, data)
 
     def ready(self):
-        self.enviar_comando("change_color", "red")
+        self.enviar_comando("change_color", "yellow")
+        #self.push_command("change_color", "red")
 
     def process_action(self, action, data):
-        """Dispatcher principal de acciones de voto_web."""
         print action, data
         if action == "document_ready":
             self.ready()
             print "ready"
+        elif action == "select_color":
+            self.enviar_comando("change_color", data)
+            print "Color changed to " + data
         elif action == "log":
             if DEBUG:
                 print "LOG >>>", data

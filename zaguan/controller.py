@@ -34,13 +34,17 @@ class WebContainerController(object):
         json_data = dumps(data).replace("\\\"", "\\\'")
         self.send_function("run_op('%s', '%s')" % (comando, json_data))
 
-    def get_browser(self, uri, debug=False):
+    def get_browser(self, uri, settings=[], debug=False):
         """Obtiene el objeto browser y lo prepara para poder ser usada en este
         contexto.
 
+        Opcionalmente, se pueden pasar una lista de tuplas (key, value) de
+        settings para hacer override de los defaults del browser.
+
         Devuelve el objeto browser y setea la funcion de envio para la clase.
         """
-        browser, web_send = launch_browser(uri, echo=debug)
+        browser, web_send = launch_browser(uri, echo=debug,
+                                           user_settings=settings)
         self.send_function = web_send
 
         browser.connect("resource-request-starting",

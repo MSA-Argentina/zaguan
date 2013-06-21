@@ -1,14 +1,11 @@
 import pygtk
 pygtk.require('2.0')
-import gtk
-import thread
 import os
 import urllib
 
-from time import sleep
-
 from zaguan import Zaguan
 from zaguan.examples.colors.controller import ColorsController
+
 
 def load_window():
     controller = ColorsController()

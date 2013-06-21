@@ -19,4 +19,3 @@ class ColorsControllerActions(BaseActionController):
         """Action excecuted when 'log' is called and debug is True."""
         if DEBUG:
             print "LOG >>>", data
-

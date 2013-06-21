@@ -33,16 +33,16 @@ class WebContainerController(object):
         json_data = dumps(data).replace("\\\"", "\\\'")
         self.send_function("run_op('%s', '%s')" % (command, json_data))
 
-    def get_browser(self, uri, settings=[], debug=False):
+    def get_browser(self, uri, settings=[], debug=False, qt=False):
         """Gets the browser objects and prpare it to bo able to be used in it's
         context.
         """
         browser, web_send = launch_browser(uri, echo=debug,
-                                           user_settings=settings)
+                                           user_settings=settings, qt=qt)
         self.send_function = web_send
-
-        browser.connect("resource-request-starting",
-                        self.on_navigation_requested)
+        if not qt:
+            browser.connect("resource-request-starting",
+                            self.on_navigation_requested)
         return browser
 
     def add_processor(self, url_word, instance):

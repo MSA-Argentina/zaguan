@@ -3,6 +3,12 @@ try:
 except ImportError:
     print "webkit not found"
 
+try:
+    from PyQt4.QtWebKit import QWebView
+    from PyQt4.QtCore import *
+    from PyQt4.QtGui import *
+except:
+    print "webkit QT not found"
 
 class WebKitMethods(object):
     @staticmethod
@@ -24,3 +30,28 @@ class WebKitMethods(object):
     @staticmethod
     def open_uri(browser, uri):
         browser.open(uri)
+
+    @staticmethod
+    def set_settings(browser, user_settings):
+        browser_settings = browser.get_settings()
+        if user_settings is not None:
+            for setting, value in user_settings:
+                browser_settings.set_property(setting, value)
+
+class QTWebKitMethods(object):
+    @staticmethod
+    def create_browser():
+        web = QWebView()
+        return web
+
+    @staticmethod
+    def inject_javascript(browser, script):
+        browser.execute_script(script)
+
+    @staticmethod
+    def open_uri(browser, uri):
+        browser.load(QUrl(uri))
+
+    @staticmethod
+    def set_settings(browser, user_settings):
+        pass

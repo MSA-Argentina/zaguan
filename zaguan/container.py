@@ -1,23 +1,19 @@
-from zaguan.engines import WebKitMethods
-from zaguan.constants import WEBKIT
+from zaguan.engines import WebKitMethods, QTWebKitMethods
 from zaguan.functions import asynchronous_gtk_message, get_implementation
 
 
 implementation_name = get_implementation()
 
 
-def launch_browser(uri, echo=False, user_settings=None):
+def launch_browser(uri, echo=False, user_settings=None, qt=False):
     """Creates and initialize a browser object"""
-    if implementation_name == WEBKIT:
-        implementation = WebKitMethods
+    if qt:
+        implementation = QTWebKitMethods
     else:
-        raise NotImplementedError("No web engine available")
+        implementation = WebKitMethods
 
     browser = implementation.create_browser()
-    browser_settings = browser.get_settings()
-    if user_settings is not None:
-        for setting, value in user_settings:
-            browser_settings.set_property(setting, value)
+    implementation.set_settings(browser, user_settings)
 
     implementation.open_uri(browser, uri)
 

@@ -7,6 +7,7 @@ implementation_name = get_implementation()
 
 
 def launch_browser(uri, echo=False, user_settings=None):
+    """Creates and initialize a browser object"""
     if implementation_name == WEBKIT:
         implementation = WebKitMethods
     else:

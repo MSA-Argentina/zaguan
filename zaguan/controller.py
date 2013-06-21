@@ -9,39 +9,33 @@ from zaguan.container import launch_browser
 
 
 class WebContainerController(object):
+    """Base class for the web containers of the controllers."""
     def __init__(self):
         self.processors = []
 
-    """Clase base para los controladores de los contenedores web."""
     def on_navigation_requested(self, elem, view, frame, req, data=None):
-        """Callback que se ejecuta cada vez que se carga una URI dentro del
-        objeto webkit."""
+        """This is the Callback executed each time  URI inside the webkit
+        object is loaded"""
         uri = req.get_uri()
         self.process_uri(uri)
 
     def process_uri(self, uri):
-        """Procesa la URI y la separa en partes para llamar a process_action."""
+        """Procces the url on each processor."""
         for processor in self.processors:
             processor(uri)
 
-    def set_pantalla(self, pantalla, **kwargs):
-        """Envia un comando de cambio de pantalla a la interfaz Web"""
-        self.enviar_comando("cambiar_pantalla", [pantalla, kwargs])
+    def set_screen(self, screen, **kwargs):
+        """Sends the change sreen command to the web interface."""
+        self.send_command("change_screen", [screen, kwargs])
 
-    def enviar_comando(self, comando, data=None):
-        """Genera el comando Javascript a enviar a la interfaz web y lo envia.
-        """
+    def send_command(self, command, data=None):
+        """Inyects the JS in the browser for the givven command."""
         json_data = dumps(data).replace("\\\"", "\\\'")
-        self.send_function("run_op('%s', '%s')" % (comando, json_data))
+        self.send_function("run_op('%s', '%s')" % (command, json_data))
 
     def get_browser(self, uri, settings=[], debug=False):
-        """Obtiene el objeto browser y lo prepara para poder ser usada en este
-        contexto.
-
-        Opcionalmente, se pueden pasar una lista de tuplas (key, value) de
-        settings para hacer override de los defaults del browser.
-
-        Devuelve el objeto browser y setea la funcion de envio para la clase.
+        """Gets the browser objects and prpare it to bo able to be used in it's
+        context.
         """
         browser, web_send = launch_browser(uri, echo=debug,
                                            user_settings=settings)
@@ -72,7 +66,7 @@ class WebContainerController(object):
                     data = loads(urllib.unquote(data))
 
                     # search the action at the 'action controller' instance
-                    # argumetn. if we dont find the action, we try to get it
+                    # argument. if we dont find the action, we try to get it
                     # from the controller itself.
                     method = getattr(instance, action, None)
                     if method is None:

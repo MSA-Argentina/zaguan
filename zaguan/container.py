@@ -1,4 +1,4 @@
-from zaguan.engines import WebKitMethods, GtkMozEmbedMethods
+from zaguan.engines import WebKitMethods
 from zaguan.constants import WEBKIT
 from zaguan.functions import asynchronous_gtk_message, get_implementation
 

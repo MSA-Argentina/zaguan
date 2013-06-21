@@ -78,20 +78,3 @@ class WebContainerController(object):
                     return method(data)
 
         self.processors.append(_inner)
-
-    def bindaction(self, action):
-        """Bind actions into the WebContainerController."""
-        if BaseActionController not in inspect.getmro(action):
-            raise TypeError("Only BaseActionController type is allowed.")
-
-        self.actions = action(controller=self)
-
-    def dispatch_action(self, action, data):
-        """Execute 'action' with the given data or raise NotImplementedError."""
-        method = getattr(self.actions, action, None)
-
-        if method is None:
-            msg = '%s is not implemented at %s' % (action, repr(self.actions))
-            raise NotImplementedError(msg)
-
-        return method(data)

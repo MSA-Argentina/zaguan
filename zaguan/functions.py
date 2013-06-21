@@ -1,7 +1,6 @@
 import gobject
 
-from zaguan.constants import WEBKIT, GECKO
-
+from zaguan.constants import WEBKIT
 
 def get_implementation():
     try:
@@ -10,18 +9,10 @@ def get_implementation():
     except:
         have_webkit = False
 
-    try:
-        import gtkmozembed
-        have_gtkmozembed = True
-    except:
-        have_gtkmozembed = False
-
     if have_webkit:
         implementation = WEBKIT
-    elif have_gtkmozembed:
-        implementation = GECKO
     else:
-        raise Exception('Fallo al importar modulo de webkit o gtkmozembed')
+        raise Exception('Failed to import webkit module')
     return implementation
 
 def asynchronous_gtk_message(fun):

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import urllib
+import inspect
 
 from json import dumps, loads
 
+from zaguan.actions import BaseActionController
 from zaguan.container import launch_browser
 
 
@@ -49,7 +51,7 @@ class WebContainerController(object):
                         self.on_navigation_requested)
         return browser
 
-    def add_processor(self, url_word, callback):
+    def add_processor(self, url_word, instance):
         def _inner(uri):
             scheme, path = uri.split(':', 1)
             if scheme == "http":
@@ -68,6 +70,32 @@ class WebContainerController(object):
                         data = "null"
 
                     data = loads(urllib.unquote(data))
-                    return callback(action, data)
+
+                    # search the action at the 'action controller' instance
+                    # argumetn. if we dont find the action, we try to get it
+                    # from the controller itself.
+                    method = getattr(instance, action, None)
+                    if method is None:
+                        method = getattr(self, action, None)
+                    if not method:
+                        raise NotImplementedError()
+                    return method(data)
 
         self.processors.append(_inner)
+
+    def bindaction(self, action):
+        """Bind actions into the WebContainerController."""
+        if BaseActionController not in inspect.getmro(action):
+            raise TypeError("Only BaseActionController type is allowed.")
+
+        self.actions = action(controller=self)
+
+    def dispatch_action(self, action, data):
+        """Execute 'action' with the given data or raise NotImplementedError."""
+        method = getattr(self.actions, action, None)
+
+        if method is None:
+            msg = '%s is not implemented at %s' % (action, repr(self.actions))
+            raise NotImplementedError(msg)
+
+        return method(data)

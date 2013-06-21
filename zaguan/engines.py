@@ -3,13 +3,8 @@ try:
 except ImportError:
     pass
 
-try:
-    import gtkmozembed
-except ImportError:
-    pass
 
 class WebKitMethods(object):
-
     @staticmethod
     def create_browser():
         settings = webkit.WebSettings()
@@ -34,26 +29,3 @@ class WebKitMethods(object):
     @staticmethod
     def open_uri(browser, uri):
         browser.open(uri)
-
-
-class GtkMozEmbedMethods(object):
-
-    @staticmethod
-    def create_browser():
-        return gtkmozembed.MozEmbed()
-
-    @staticmethod
-    def inject_javascript(browser, script):
-        uri = 'javascript:%s' % urllib.quote(script + '\n;void(0);')
-        browser.load_url(uri)
-
-    @staticmethod
-    def connect_title_changed(browser, callback):
-        # XXX: probably you should cross your fingers and hope browser
-        #      isn't sending title messages too quickly...?
-        def callback_wrapper(*args): callback(browser.get_title())
-        browser.connect('title', callback_wrapper)
-
-    @staticmethod
-    def open_uri(browser, uri):
-        browser.load_url(uri)

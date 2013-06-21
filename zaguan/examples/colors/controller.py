@@ -10,5 +10,5 @@ class ColorsController(WebContainerController):
         self.add_processor("colors", instancia)
 
     def ready(self):
-        self.enviar_comando("change_color", "yellow")
+        self.send_command("change_color", "yellow")
 

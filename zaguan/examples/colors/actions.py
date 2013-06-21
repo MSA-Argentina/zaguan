@@ -12,7 +12,7 @@ class ColorsControllerActions(BaseActionController):
 
     def select_color(self, data):
         """Action excecuted when 'select_color' is called."""
-        self.controller.enviar_comando("change_color", data)
+        self.controller.send_command("change_color", data)
         print "Color changed to " + data
 
     def log(self, data):

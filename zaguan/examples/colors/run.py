@@ -20,5 +20,5 @@ def load_browser():
     zaguan.run()
 
 if __name__ == "__main__":
-    load_browser()
-    #load_window()
+    #load_browser()
+    load_window()

@@ -12,5 +12,3 @@ class ColorsController(WebContainerController):
     def ready(self):
         self.enviar_comando("change_color", "yellow")
 
-    def process_action(self, action, data):
-        self.dispatch_action(action, data)

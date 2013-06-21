@@ -9,7 +9,9 @@ gtk.gdk.threads_init()
 
 
 class Zaguan(object):
-    def __init__(self, controller, uri):
+    def __init__(self, uri, controller=None):
+        if controller is None:
+            controller = WebContainerController()
         self.controller = controller
         self.uri = uri
 

@@ -5,7 +5,7 @@ from zaguan.functions import asynchronous_gtk_message, get_implementation
 implementation_name = get_implementation()
 
 
-def launch_browser(uri, echo=False):
+def launch_browser(uri, echo=False, user_settings=[]):
     if implementation_name == WEBKIT:
         implementation = WebKitMethods
     elif implementation_name == GECKO:
@@ -14,6 +14,9 @@ def launch_browser(uri, echo=False):
         raise NotImplementedError("No hay motor web disponible")
 
     browser = implementation.create_browser()
+    browser_settings = browser.get_settings()
+    for setting, value in user_settings:
+        browser_settings.set_property(setting, value)
 
     implementation.open_uri(browser, uri)
 

@@ -13,7 +13,7 @@ function run_op(operation, data){
     func(data);
 }
 
-function get_url_function(action){
+function get_url_function(prefix){
   function _inner(action, data){
       if(data === undefined) {
           data = "";
@@ -24,7 +24,7 @@ function get_url_function(action){
       } else{
           server = "";
       }
-      var url = "http://" + server + "colors/" + action + "?" + json_data;
+      var url = "http://" + server + prefix + "/" + action + "?" + json_data;
       return url;
   }
   return _inner

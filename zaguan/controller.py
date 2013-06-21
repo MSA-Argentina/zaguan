@@ -45,8 +45,9 @@ class WebContainerController(object):
                             self.on_navigation_requested)
         return browser
 
-    def add_processor(self, url_word, instance):
+    def add_processor(self, url_word, instance=None):
         def _inner(uri):
+            print "URI", uri
             scheme, path = uri.split(':', 1)
             if scheme == "http":
                 parts = path.split("/")[2:]
@@ -71,6 +72,7 @@ class WebContainerController(object):
                     method = getattr(instance, action, None)
                     if method is None:
                         method = getattr(self, action, None)
+
                     if not method:
                         raise NotImplementedError()
                     return method(data)

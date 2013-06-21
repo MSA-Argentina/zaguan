@@ -1,4 +1,4 @@
-get_url = get_url_function();
+get_url = get_url_function("colors");
 
 function load_ready_msg(){
     send('document_ready');

@@ -20,7 +20,7 @@ def load_window():
     cur_dir = os.path.dirname(os.path.abspath(__file__))
     file_ = os.path.join(cur_dir, 'html/index.html')
     uri = 'file://' + urllib.pathname2url(file_)
-    browser = controller.get_browser(uri)
+    browser = controller.get_browser(uri, debug=True)
     window.set_border_width(0)
     window.add(browser)
     sleep(1)

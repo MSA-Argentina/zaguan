@@ -8,28 +8,7 @@ from zaguan.examples.colors.settings import DEBUG
 class ColorsController(WebContainerController):
     def __init__(self):
         WebContainerController.__init__(self)
-        self.processors.append(self.process_colors_url)
-
-    def process_colors_url(self, uri):
-        scheme, path = uri.split(':', 1)
-        print scheme, path, uri
-        if scheme == "http":
-            parts = path.split("/")[2:]
-            if parts[0] == "colors":
-                remain = parts[1]
-            elif parts[1]  == "colors":
-                remain = parts[2]
-            else:
-                remain = None
-            if remain is not None:
-                try:
-                    action, data = remain.split("?")
-                except ValueError:
-                    action = remain
-                    data = "null"
-
-                data = from_json(urllib.unquote(data))
-                self.process_action(action, data)
+        self.add_processor("colors", self.process_action)
 
     def ready(self):
         self.enviar_comando("change_color", "yellow")

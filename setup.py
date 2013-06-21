@@ -10,7 +10,7 @@ except ImportError:
 
 setup(
     name='zaguan',
-    version='0.2',
+    version='0.2.1',
     author='Felipe Lerena',
     author_email='flerena@msa.com.ar',
     packages=['zaguan'],

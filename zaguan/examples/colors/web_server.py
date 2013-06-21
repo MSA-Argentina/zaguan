@@ -8,9 +8,9 @@ _msg_queue = []
 def queue_send(msg):
     _msg_queue.append(msg)
 
-
 if __name__ == '__main__':
     controller = ColorsController()
+    controller.send_function = queue_send
 
     app = Flask(__name__, static_folder="html")
     app.add_url_rule('/<path:filename>', endpoint='static',

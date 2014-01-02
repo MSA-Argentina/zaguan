@@ -43,6 +43,7 @@ class Zaguan(object):
 
         if debug:
             settings.append(('enable-default-context-menu', True))
+            settings.append(('enable-developer-extras', True))
 
         browser = self.controller.get_browser(self.uri, debug=debug,
                                               settings=settings)

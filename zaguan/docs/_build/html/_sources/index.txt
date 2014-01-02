@@ -13,7 +13,7 @@ Zaguan is Free Software! you can check the code at http://bitbucket.org/msa_team
 Supported toolkits
 =======================
  * GTK+ (Full support)
- * QT4 No event caching
+ * QT4 No event caching or developer tools
 
 Installation
 ============

@@ -47,7 +47,6 @@ class WebContainerController(object):
 
     def add_processor(self, url_word, instance=None):
         def _inner(uri):
-            print "URI", uri
             scheme, path = uri.split(':', 1)
             if scheme == "http":
                 parts = path.split("/")[2:]

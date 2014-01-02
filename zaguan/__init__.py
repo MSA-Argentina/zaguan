@@ -20,8 +20,12 @@ class Zaguan(object):
             controller = WebContainerController()
         self.controller = controller
         self.uri = uri
+        self.on_close = None
+
     def run(self, settings=None, window=None, debug=False,
-            qt=False):
+            qt=False, on_close=None):
+        self.on_close = on_close
+
         if qt:
             self.run_qt(settings, window, debug)
         else:
@@ -37,6 +41,7 @@ class Zaguan(object):
             self.window = window
         browser = self.controller.get_browser(self.uri, debug=debug,
                                               settings=settings)
+        self.window.connect("delete-event", self.quit)
         self.window.set_border_width(0)
         self.window.add(browser)
         sleep(1)
@@ -54,4 +59,10 @@ class Zaguan(object):
                                               settings=settings, qt=True)
         browser.show()
         sys.exit(self.window.exec_())
+
+
+    def quit(self, widget, event):
+        if self.on_close is not None:
+            self.on_close(widget, event)
+
 

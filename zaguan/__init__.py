@@ -12,7 +12,6 @@ except ImportError:
 from time import sleep
 
 from zaguan.controller import WebContainerController
-from zaguan.inspector import Inspector
 
 
 class Zaguan(object):
@@ -41,18 +40,12 @@ class Zaguan(object):
         else:
             self.window = window
 
-        if debug:
-            settings.append(('enable-default-context-menu', True))
-            settings.append(('enable-developer-extras', True))
 
         browser = self.controller.get_browser(self.uri, debug=debug,
                                               settings=settings)
         self.window.connect("delete-event", self.quit)
         self.window.set_border_width(0)
         self.window.add(browser)
-        if debug:
-            inspector = browser.get_web_inspector()
-            Inspector(inspector)
 
         sleep(1)
         self.window.show_all()

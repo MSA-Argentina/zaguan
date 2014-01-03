@@ -4,8 +4,8 @@ import inspect
 
 from json import dumps, loads
 
-from zaguan.actions import BaseActionController
 from zaguan.container import launch_browser
+from zaguan.inspector import Inspector
 
 
 class WebContainerController(object):
@@ -37,8 +37,16 @@ class WebContainerController(object):
         """Gets the browser objects and prpare it to bo able to be used in it's
         context.
         """
+        if debug:
+            settings.append(('enable-default-context-menu', True))
+            settings.append(('enable-developer-extras', True))
+
         browser, web_send = launch_browser(uri, echo=debug,
                                            user_settings=settings, qt=qt)
+        if debug:
+            inspector = browser.get_web_inspector()
+            Inspector(inspector)
+
         self.send_function = web_send
         if not qt:
             browser.connect("resource-request-starting",

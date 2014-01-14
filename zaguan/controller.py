@@ -33,10 +33,13 @@ class WebContainerController(object):
         json_data = dumps(data).replace("\\\"", "\\\'")
         self.send_function("run_op('%s', '%s')" % (command, json_data))
 
-    def get_browser(self, uri, settings=[], debug=False, qt=False):
+    def get_browser(self, uri, settings=None, debug=False, qt=False):
         """Gets the browser objects and prpare it to bo able to be used in it's
         context.
         """
+        if settings is None:
+            settings = []
+
         if debug:
             settings.append(('enable-default-context-menu', True))
             settings.append(('enable-developer-extras', True))
@@ -45,7 +48,7 @@ class WebContainerController(object):
                                            user_settings=settings, qt=qt)
         if debug:
             inspector = browser.get_web_inspector()
-            Inspector(inspector)
+            self.inspector = Inspector(inspector)
 
         self.send_function = web_send
         if not qt:

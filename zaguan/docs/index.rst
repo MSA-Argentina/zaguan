@@ -8,7 +8,7 @@ Welcome to Zaguan's documentation!
 
 Zaguan is a Framework to allow the easy creation of hibrid apps.
 
-Zaguan is Free Software! you can check the code at http://bitbucket.org/msa_team/zaguan
+Zaguan is Free Software! you can check the code at http://github.com/MSA-Argentina/zaguan
 
 Supported toolkits
 =======================
@@ -33,7 +33,7 @@ From source
 
 .. code-block:: bash
 
-    hg clone ssh://hg@bitbucket.org/msa_team/zaguan
+    git clone https://github.com/MSA-Argentina/zaguan.git
     sudo python setup.py install
 
 Other requirements

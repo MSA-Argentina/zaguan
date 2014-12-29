@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
+import gobject
 import urllib
-import inspect
 
 from json import dumps, loads
 
@@ -56,6 +56,46 @@ class WebContainerController(object):
                             self.on_navigation_requested)
         return browser
 
+    def get_cef_browser(self, uri, window, debug=False):
+        import re
+        from cefpython3 import cefpython
+
+        settings = {
+            "debug": False, #debug, # cefpython debug messages in console and in log_file
+            "log_severity": cefpython.LOGSEVERITY_INFO, # LOGSEVERITY_VERBOSE
+            "release_dcheck_enabled": True, # Enable only when debugging
+            # This directories must be set on Linux
+            "locales_dir_path": cefpython.GetModuleDirectory()+"/locales",
+            "resources_dir_path": cefpython.GetModuleDirectory(),
+            "browser_subprocess_path": "%s/%s" % (
+                cefpython.GetModuleDirectory(), "subprocess"),
+        }
+
+        cefpython.Initialize(settings)
+
+        m = re.search("GtkWindow at 0x(\w+)", str(window))
+        hexID = m.group(1)
+        windowID = int(hexID, 16)
+
+        windowInfo = cefpython.WindowInfo()
+        windowInfo.SetAsChild(windowID)
+        browser = cefpython.CreateBrowserSync(
+            windowInfo,
+            browserSettings={
+                "web_security_disabled": True,
+            },
+            navigateUrl=uri)
+        self.cef_window = browser
+
+        jsBindings = cefpython.JavascriptBindings(
+            bindToFrames=False, bindToPopups=True)
+
+        jsBindings.SetFunction("zaguan", self.process_uri)
+        browser.SetJavascriptBindings(jsBindings)
+
+
+        self.send_function = browser.GetMainFrame().ExecuteJavascript
+
     def add_processor(self, url_word, instance=None):
         def _inner(uri):
             scheme, path = uri.split(':', 1)
@@ -63,7 +103,7 @@ class WebContainerController(object):
                 parts = path.split("/")[2:]
                 if parts[0] == url_word:
                     remain = parts[1]
-                elif parts[1]  == url_word:
+                elif parts[1] == url_word:
                     remain = parts[2]
                 else:
                     remain = None
@@ -75,7 +115,6 @@ class WebContainerController(object):
                         data = "null"
 
                     data = loads(urllib.unquote(data))
-
                     # search the action at the 'action controller' instance
                     # argument. if we dont find the action, we try to get it
                     # from the controller itself.

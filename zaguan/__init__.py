@@ -8,6 +8,10 @@ try:
     from PyQt4.QtGui import *
 except ImportError:
     print "no tiene QT instalado"
+from cefpython3 import cefpython
+
+import re
+import gobject
 
 from time import sleep
 
@@ -21,15 +25,51 @@ class Zaguan(object):
         self.controller = controller
         self.uri = uri
         self.on_close = None
+        self.exiting = False
 
     def run(self, settings=None, window=None, debug=False,
-            qt=False, on_close=None):
+            qt=False, on_close=None, cef=False):
         self.on_close = on_close
 
         if qt:
             self.run_qt(settings, window, debug)
+        elif cef:
+            self.run_cef(settings, window, debug)
         else:
             self.run_gtk(settings, window, debug)
+
+    def run_cef(self, settings=None, window=None, debug=False):
+        gtk.gdk.threads_init()
+
+        if window is None:
+            self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+            self.window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
+            self.window.set_size_request(width=800, height=600)
+            self.window.realize()
+        else:
+            self.window = window
+
+        self.window.set_border_width(0)
+
+        self.controller.get_cef_browser(self.uri, self.window)
+        sleep(1)
+        self.window.show_all()
+        self.window.show()
+        gobject.timeout_add(10, self.OnTimer)
+
+        gtk.main()
+        cefpython.Shutdown()
+
+    def OnTimer(self):
+        if self.exiting:
+            return False
+        from cefpython3 import cefpython
+        cefpython.MessageLoopWork()
+        return True
+
+    def OnExit(self, widget, data=None):
+        self.exiting = True
+        gtk.main_quit()
 
     def run_gtk(self, settings=None, window=None, debug=False):
         gtk.gdk.threads_init()

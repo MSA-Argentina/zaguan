@@ -13,7 +13,7 @@ def load_window():
     file_ = os.path.join(cur_dir, 'html/index.html')
     uri = 'file://' + urllib.pathname2url(file_)
     zaguan = Zaguan(uri, controller)
-    zaguan.run()
+    zaguan.run(cef=True)
 
 def load_browser():
     zaguan = Zaguan("http://www.google.com")

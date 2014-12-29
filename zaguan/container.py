@@ -2,10 +2,10 @@ from zaguan.engines import WebKitMethods, QTWebKitMethods
 from zaguan.functions import asynchronous_gtk_message, get_implementation
 
 
-implementation_name = get_implementation()
+#implementation_name = get_implementation()
 
 
-def launch_browser(uri, echo=False, user_settings=None, qt=False):
+def launch_browser(uri, echo=False, user_settings=None, qt=False, window=None):
     """Creates and initialize a browser object"""
     if qt:
         implementation = QTWebKitMethods

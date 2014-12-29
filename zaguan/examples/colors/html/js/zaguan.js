@@ -1,6 +1,10 @@
 
 function send(action, data) {
-    $.get(get_url(action, data));
+    if(window.zaguan === undefined){
+        $.get(get_url(action, data));
+    } else {
+        window.zaguan(get_url(action, data));
+    }
 }
 
 function log(msg){

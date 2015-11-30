@@ -8,3 +8,6 @@ class BaseActionController(object):
     def controller(self):
         """Returns the controller instance."""
         return self.__controller
+
+    def send_command(self, *args, **kwargs):
+        self.controller.send_command(*args, **kwargs)

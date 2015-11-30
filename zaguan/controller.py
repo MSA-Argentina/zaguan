@@ -123,7 +123,7 @@ class WebContainerController(object):
                         method = getattr(self, action, None)
 
                     if not method:
-                        raise NotImplementedError()
+                        raise NotImplementedError(action)
                     return method(data)
 
         self.processors.append(_inner)

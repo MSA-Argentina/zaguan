@@ -1,14 +1,16 @@
+from __future__ import absolute_import
+from __future__ import print_function
 try:
     from webkit import WebView, WebSettings
 except ImportError:
-    print "webkit not found"
+    print("webkit not found")
 
 try:
     from PyQt4.QtWebKit import QWebView
     from PyQt4.QtCore import *
     from PyQt4.QtGui import *
 except:
-    print "webkit QT not found"
+    print("webkit QT not found")
 
 class WebKitMethods(object):
     @staticmethod

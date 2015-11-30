@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from zaguan.controller import WebContainerController
 from zaguan.examples.colors.actions import ColorsControllerActions
 

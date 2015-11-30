@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import gobject
 
 from zaguan.constants import WEBKIT
@@ -16,8 +17,9 @@ def get_implementation():
     return implementation
 
 def asynchronous_gtk_message(fun):
-    def worker((function, args, kwargs)):
-        apply(function, args, kwargs)
+    def worker(xxx_todo_changeme):
+        (function, args, kwargs) = xxx_todo_changeme
+        function(*args, **kwargs)
 
     def fun2(*args, **kwargs):
         gobject.idle_add(worker, (fun, args, kwargs))

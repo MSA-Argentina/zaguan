@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-import gobject
+from __future__ import absolute_import
+
 import urllib
 
 from json import dumps, loads
@@ -93,8 +94,8 @@ class WebContainerController(object):
         jsBindings.SetFunction("zaguan", self.process_uri)
         browser.SetJavascriptBindings(jsBindings)
 
-
         self.send_function = browser.GetMainFrame().ExecuteJavascript
+
 
     def add_processor(self, url_word, instance=None):
         def _inner(uri):

@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 # Copyright (C) 2008 Jan Alonzo <jmalonzo@unpluggable.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -15,6 +16,7 @@
 
 import gtk
 import webkit
+
 
 class Inspector (gtk.Window):
     def __init__ (self, inspector):

@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 #! /usr/bin/env python
 from flask.app import Flask
 from flask.globals import request

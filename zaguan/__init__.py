@@ -1,16 +1,17 @@
+from __future__ import absolute_import
+from __future__ import print_function
 try:
     import gtk
 except ImportError:
-    print  "no tiene GTK instalado"
+    print("no tiene GTK instalado")
 try:
     import sys
     from PyQt4.QtCore import *
     from PyQt4.QtGui import *
 except ImportError:
-    print "no tiene QT instalado"
+    print("no tiene QT instalado")
 from cefpython3 import cefpython
 
-import re
 import gobject
 
 from time import sleep
@@ -79,7 +80,6 @@ class Zaguan(object):
             self.window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
         else:
             self.window = window
-
 
         browser = self.controller.get_browser(self.uri, debug=debug,
                                               settings=settings)

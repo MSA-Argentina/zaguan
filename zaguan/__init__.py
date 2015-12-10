@@ -2,17 +2,27 @@ from __future__ import absolute_import
 from __future__ import print_function
 try:
     import gtk
+    import gobject
+    from gtk import gdk
+    timeout_add = gobject.timeout_add
+    WINDOW_TOPLEVEL = gtk.WINDOW_TOPLEVEL
+    WIN_POS_CENTER_ALWAYS = gtk.WIN_POS_CENTER_ALWAYS
 except ImportError:
-    print("no tiene GTK instalado")
+    print("GTK not installed")
+    try:
+        from gi.repository import GLib, Gtk as gtk, Gdk as gdk
+        timeout_add = GLib.timeout_add
+        WINDOW_TOPLEVEL = gtk.WindowType.TOPLEVEL
+        WIN_POS_CENTER_ALWAYS = gtk.WindowPosition.CENTER_ALWAYS
+    except ImportError:
+        print("PyGi not installed")
 try:
     import sys
     from PyQt4.QtCore import *
     from PyQt4.QtGui import *
 except ImportError:
-    print("no tiene QT instalado")
-from cefpython3 import cefpython
+    print("QT not installed")
 
-import gobject
 
 from time import sleep
 
@@ -40,11 +50,11 @@ class Zaguan(object):
             self.run_gtk(settings, window, debug)
 
     def run_cef(self, settings=None, window=None, debug=False):
-        gtk.gdk.threads_init()
+        gdk.threads_init()
 
         if window is None:
-            self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-            self.window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
+            self.window = gtk.Window(WINDOW_TOPLEVEL)
+            self.window.set_position(WIN_POS_CENTER_ALWAYS)
             self.window.set_size_request(width=800, height=600)
             self.window.realize()
         else:
@@ -56,7 +66,7 @@ class Zaguan(object):
         sleep(1)
         self.window.show_all()
         self.window.show()
-        gobject.timeout_add(10, self.OnTimer)
+        timeout_add(10, self.OnTimer)
 
         gtk.main()
         cefpython.Shutdown()
@@ -73,11 +83,11 @@ class Zaguan(object):
         gtk.main_quit()
 
     def run_gtk(self, settings=None, window=None, debug=False):
-        gtk.gdk.threads_init()
+        gdk.threads_init()
 
         if window is None:
-            self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-            self.window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
+            self.window = gtk.Window(WINDOW_TOPLEVEL)
+            self.window.set_position(WIN_POS_CENTER_ALWAYS)
         else:
             self.window = window
 

@@ -1,7 +1,17 @@
 from __future__ import absolute_import
-import gobject
+
+try:
+    import gobject
+    idle_add = gobject.idle_add
+except ImportError:
+    try:
+        from gi.repository import GLib
+        idle_add = GLib.idle_add
+    except ImportError:
+        pass
 
 from zaguan.constants import WEBKIT
+
 
 def get_implementation():
     try:
@@ -16,12 +26,13 @@ def get_implementation():
         raise Exception('Failed to import webkit module')
     return implementation
 
+
 def asynchronous_gtk_message(fun):
     def worker(xxx_todo_changeme):
         (function, args, kwargs) = xxx_todo_changeme
         function(*args, **kwargs)
 
     def fun2(*args, **kwargs):
-        gobject.idle_add(worker, (fun, args, kwargs))
+        idle_add(worker, (fun, args, kwargs))
 
     return fun2

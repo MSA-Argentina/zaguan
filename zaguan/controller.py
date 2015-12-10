@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
-import urllib
+try:
+    from urllib.parse import unquote
+except ImportError:
+    from urllib import unquote
+
 
 from json import dumps, loads
 
 from zaguan.container import launch_browser
 from zaguan.inspector import Inspector
+
 
 
 class WebContainerController(object):
@@ -48,7 +53,11 @@ class WebContainerController(object):
         browser, web_send = launch_browser(uri, echo=debug,
                                            user_settings=settings, qt=qt)
         if debug:
-            inspector = browser.get_web_inspector()
+            try:
+                inspector = browser.get_web_inspector()
+            except AttributeError:
+                inspector = browser.get_inspector()
+
             self.inspector = Inspector(inspector)
 
         self.send_function = web_send
@@ -115,7 +124,7 @@ class WebContainerController(object):
                         action = remain
                         data = "null"
 
-                    data = loads(urllib.unquote(data))
+                    data = loads(unquote(data))
                     # search the action at the 'action controller' instance
                     # argument. if we dont find the action, we try to get it
                     # from the controller itself.

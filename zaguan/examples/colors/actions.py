@@ -1,7 +1,8 @@
 from __future__ import absolute_import
 from __future__ import print_function
+
 from zaguan.actions import BaseActionController
-from zaguan.examples.colors.settings import DEBUG
+from settings import DEBUG
 
 
 class ColorsControllerActions(BaseActionController):

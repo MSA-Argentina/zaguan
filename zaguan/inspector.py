@@ -14,11 +14,14 @@ from __future__ import absolute_import
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import gtk
-import webkit
+try:
+    import gtk
+    import webkit
+except ImportError:
+    from gi.repository import Gtk as gtk, WebKit as webkit
 
 
-class Inspector (gtk.Window):
+class Inspector(gtk.Window):
     def __init__ (self, inspector):
         """initialize the WebInspector class"""
         gtk.Window.__init__(self)
@@ -43,9 +46,8 @@ class Inspector (gtk.Window):
         """Called when the 'inspect' menu item is activated"""
         self.show()
         scrolled_window = gtk.ScrolledWindow()
-        scrolled_window.props.hscrollbar_policy = gtk.POLICY_AUTOMATIC
-        scrolled_window.props.vscrollbar_policy = gtk.POLICY_AUTOMATIC
         webview = webkit.WebView()
+        scrolled_window.set_size_request(width=800, height=600)
         scrolled_window.add(webview)
         scrolled_window.show_all()
 
@@ -67,7 +69,7 @@ class Inspector (gtk.Window):
         """Called when the inspector should appear in a separate window"""
         return False
 
-    def _close_window_cb (self, inspector, web_view):
+    def _close_window_cb (self, inspector, web_view=None):
         """Called when the inspector window should be closed"""
         self.hide()
         return True

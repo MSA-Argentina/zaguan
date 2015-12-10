@@ -2,8 +2,12 @@ from __future__ import absolute_import
 from __future__ import print_function
 try:
     from webkit import WebView, WebSettings
-except ImportError:
     print("webkit not found")
+except ImportError:
+    try:
+        from gi.repository.WebKit import WebView, WebSettings
+    except ImportError:
+        print("webkit via PyGi not found")
 
 try:
     from PyQt4.QtWebKit import QWebView
@@ -16,8 +20,9 @@ class WebKitMethods(object):
     @staticmethod
     def create_browser():
         settings = WebSettings()
-        #settings.set_property('enable-xss-auditor', False)
-        # todas las settings en http://webkitgtk.org/reference/webkitgtk/stable/WebKitWebSettings.html
+        # settings.set_property('enable-xss-auditor', False)
+        # Settings for webkitgtk http://webkitgtk.org/reference/webkitgtk/stable/WebKitWebSettings.html
+        # Setting for WebKit via git http://lazka.github.io/pgi-docs/#WebKit-3.0/classes/WebSettings.html
         settings.set_property('enable-default-context-menu', False)
         settings.set_property('enable-accelerated-compositing', True)
         settings.set_property('enable-file-access-from-file-uris', True)

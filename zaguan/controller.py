@@ -10,8 +10,11 @@ except ImportError:
 from json import dumps, loads
 
 from zaguan.container import launch_browser
-from zaguan.inspector import Inspector
-
+try:
+    from zaguan_inspector import Inspector
+    inspector_available = True
+except ImportError:
+    inspector_available = False
 
 
 class WebContainerController(object):
@@ -46,13 +49,13 @@ class WebContainerController(object):
         if settings is None:
             settings = []
 
-        if debug:
+        if debug and inspector_available:
             settings.append(('enable-default-context-menu', True))
             settings.append(('enable-developer-extras', True))
 
         browser, web_send = launch_browser(uri, echo=debug,
                                            user_settings=settings, qt=qt)
-        if debug:
+        if debug and inspector_available:
             try:
                 inspector = browser.get_web_inspector()
             except AttributeError:
@@ -104,7 +107,6 @@ class WebContainerController(object):
         browser.SetJavascriptBindings(jsBindings)
 
         self.send_function = browser.GetMainFrame().ExecuteJavascript
-
 
     def add_processor(self, url_word, instance=None):
         def _inner(uri):

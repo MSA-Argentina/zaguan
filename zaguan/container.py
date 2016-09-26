@@ -1,25 +1,20 @@
-from __future__ import absolute_import
-from __future__ import print_function
-from zaguan.engines import WebKitMethods, QTWebKitMethods
+from zaguan.engines import WebKitMethods
 from zaguan.functions import asynchronous_gtk_message
 
 
-def launch_browser(uri, echo=False, user_settings=None, qt=False, window=None):
+def launch_browser(uri, debug=False, user_settings=None, window=None):
     """Creates and initialize a browser object"""
-    if qt:
-        implementation = QTWebKitMethods
-    else:
-        implementation = WebKitMethods
+    implementation = WebKitMethods
 
-    browser = implementation.create_browser()
+    browser = implementation.create_browser(debug)
     implementation.set_settings(browser, user_settings)
 
     implementation.open_uri(browser, uri)
 
     def web_send(msg):
-        if echo:
+        if debug:
             print('<<<', msg)
-        asynchronous_gtk_message(implementation.inject_javascript)(browser,
-                                                                   msg)
+        func = asynchronous_gtk_message(implementation.inject_javascript)
+        func(browser, msg)
 
     return browser, web_send

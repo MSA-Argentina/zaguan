@@ -1,42 +1,35 @@
-from __future__ import absolute_import
-from __future__ import print_function
-try:
-    from webkit import WebView, WebSettings
-    print("webkit not found")
-except ImportError:
-    try:
-        from gi.repository.WebKit import WebView, WebSettings
-    except ImportError:
-        print("webkit via PyGi not found")
+import gi
+gi.require_version('WebKit2', '4.0')
 
-try:
-    from PyQt4.QtWebKit import QWebView
-    from PyQt4.QtCore import *
-    from PyQt4.QtGui import *
-except:
-    print("webkit QT not found")
+from gi.repository.WebKit2 import WebView, Settings
 
 class WebKitMethods(object):
     @staticmethod
-    def create_browser():
-        settings = WebSettings()
-        # settings.set_property('enable-xss-auditor', False)
-        # Settings for webkitgtk http://webkitgtk.org/reference/webkitgtk/stable/WebKitWebSettings.html
-        # Setting for WebKit via git http://lazka.github.io/pgi-docs/#WebKit-3.0/classes/WebSettings.html
-        settings.set_property('enable-default-context-menu', False)
-        settings.set_property('enable-accelerated-compositing', True)
-        settings.set_property('enable-file-access-from-file-uris', True)
+    def create_browser(debug=False):
+        settings = Settings()
+        # TODO: Ver que onda esto
+        # https://lazka.github.io/pgi-docs/WebKit2-4.0/classes/Settings.html#WebKit2.Settings.props.enable_page_cache
+        settings.set_allow_file_access_from_file_urls(True)
+        if debug:
+            settings.set_enable_developer_extras(True)
         webview = WebView()
+
+        if not debug:
+            # https://people.gnome.org/~gcampagna/docs/WebKit2-3.0/WebKit2.WebView-context-menu.html
+            def _menu(webview, context_menu, event, hit_test_result):
+                context_menu.remove_all()
+            webview.connect('context-menu', _menu)
+
         webview.set_settings(settings)
         return webview
 
     @staticmethod
     def inject_javascript(browser, script):
-        browser.execute_script(script)
+        browser.run_javascript(script)
 
     @staticmethod
     def open_uri(browser, uri):
-        browser.open(uri)
+        browser.load_uri(uri)
 
     @staticmethod
     def set_settings(browser, user_settings):
@@ -44,21 +37,3 @@ class WebKitMethods(object):
         if user_settings is not None:
             for setting, value in user_settings:
                 browser_settings.set_property(setting, value)
-
-class QTWebKitMethods(object):
-    @staticmethod
-    def create_browser():
-        web = QWebView()
-        return web
-
-    @staticmethod
-    def inject_javascript(browser, script):
-        browser.execute_script(script)
-
-    @staticmethod
-    def open_uri(browser, uri):
-        browser.load(QUrl(uri))
-
-    @staticmethod
-    def set_settings(browser, user_settings):
-        pass

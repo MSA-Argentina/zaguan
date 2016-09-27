@@ -1,7 +1,5 @@
-from gi.repository import GLib, Gtk as gtk, Gdk as gdk
-timeout_add = GLib.timeout_add
-WINDOW_TOPLEVEL = gtk.WindowType.TOPLEVEL
-WIN_POS_CENTER_ALWAYS = gtk.WindowPosition.CENTER_ALWAYS
+from gi.repository.Gtk import Window, WindowType, WindowPosition, main
+from gi.repository.Gdk import threads_init
 
 
 from time import sleep
@@ -17,21 +15,13 @@ class Zaguan(object):
         self.uri = uri
         self.on_close = None
 
-    def run(self, settings=None, window=None, debug=False, on_close=None,
-            cef=False):
+    def run(self, settings=None, window=None, debug=False, on_close=None):
         self.on_close = on_close
-        self.run_gtk(settings, window, debug)
-
-    def OnExit(self, widget, data=None):
-        self.exiting = True
-        gtk.main_quit()
-
-    def run_gtk(self, settings=None, window=None, debug=False):
-        gdk.threads_init()
+        threads_init()
 
         if window is None:
-            self.window = gtk.Window(WINDOW_TOPLEVEL)
-            self.window.set_position(WIN_POS_CENTER_ALWAYS)
+            self.window = Window(WindowType.TOPLEVEL)
+            self.window.set_position(WindowPosition.CENTER_ALWAYS)
         else:
             self.window = window
 
@@ -44,7 +34,7 @@ class Zaguan(object):
         sleep(1)
         self.window.show_all()
         self.window.show()
-        gtk.main()
+        main()
 
     def quit(self, widget, event):
         if self.on_close is not None:

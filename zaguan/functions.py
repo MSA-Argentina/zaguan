@@ -3,7 +3,7 @@ from __future__ import absolute_import
 try:
     import gobject
     idle_add = gobject.idle_add
-except ImportError:
+except (ImportError, AttributeError):
     try:
         from gi.repository import GLib
         idle_add = GLib.idle_add

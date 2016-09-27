@@ -7,7 +7,7 @@ try:
     timeout_add = gobject.timeout_add
     WINDOW_TOPLEVEL = gtk.WINDOW_TOPLEVEL
     WIN_POS_CENTER_ALWAYS = gtk.WIN_POS_CENTER_ALWAYS
-except ImportError:
+except (ImportError, AttributeError):
     print("GTK not installed")
     try:
         from gi.repository import GLib, Gtk as gtk, Gdk as gdk

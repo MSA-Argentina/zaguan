@@ -20,4 +20,7 @@ setup(
     description='Front end framework to develop apps with webkit an pygtk',
     long_description=open('README.txt').read(),
     install_requires=[],
+    classifiers=[
+        "Development Status :: 4 - Beta"
+    ]
 )

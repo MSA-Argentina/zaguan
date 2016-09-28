@@ -1,8 +1,5 @@
 import gi
 
-gi.require_version('WebKit', '3.0')
-gi.require_version('WebKit2', '4.0')
-
 
 def get_wk_implementation(webkit_version):
     """Returns the Zaguan webkit wrapper.
@@ -28,6 +25,7 @@ class WebKitMethods(object):
                 context menu and inspector.
         """
         from gi.repository.WebKit import WebView, WebSettings
+        gi.require_version('WebKit', '3.0')
 
         if debug:
             WebKitMethods.print_version()
@@ -123,6 +121,7 @@ class WebKit2Methods(object):
                 context menu and inspector.
         """
         from gi.repository.WebKit2 import WebView, Settings
+        gi.require_version('WebKit2', '4.0')
 
         if debug:
             WebKit2Methods.print_version()

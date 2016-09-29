@@ -24,8 +24,12 @@ class WebKitMethods(object):
             debug -- boolean to indicate if it should output debug and add
                 context menu and inspector.
         """
-        from gi.repository.WebKit import WebView, WebSettings
         gi.require_version('WebKit', '3.0')
+        from gi.repository.WebKit import WebView, WebSettings, set_cache_model
+
+        # http://lazka.github.io/pgi-docs/WebKit-3.0/functions.html#WebKit.set_cache_model
+        cache_model = WebView.CacheModel.WEBKIT_CACHE_MODEL_DOCUMENT_BROWSER
+        set_cache_model(cache_model)
 
         if debug:
             WebKitMethods.print_version()
@@ -120,18 +124,25 @@ class WebKit2Methods(object):
             debug -- boolean to indicate if it should output debug and add
                 context menu and inspector.
         """
-        from gi.repository.WebKit2 import WebView, Settings
         gi.require_version('WebKit2', '4.0')
+        from gi.repository.WebKit2 import (WebView, Settings, CacheModel,
+                                           ProcessModel)
 
         if debug:
             WebKit2Methods.print_version()
 
         settings = Settings()
-        # https://lazka.github.io/pgi-docs/WebKit2-4.0/classes/Settings.html#WebKit2.Settings.props.enable_page_cache
         settings.set_allow_file_access_from_file_urls(True)
         if debug:
             settings.set_enable_developer_extras(True)
         webview = WebView()
+
+        # http://lazka.github.io/pgi-docs/WebKit2-4.0/classes/WebContext.html#WebKit2.WebContext.set_cache_model
+        context = webview.get_context()
+        context.set_cache_model(CacheModel.DOCUMENT_BROWSER)
+
+        # https://lazka.github.io/pgi-docs/WebKit2-4.0/classes/Settings.html#WebKit2.Settings.props.enable_page_cache
+        context.set_process_model(ProcessModel.SHARED_SECONDARY_PROCESS)
 
         if not debug:
             # https://people.gnome.org/~gcampagna/docs/WebKit2-3.0/WebKit2.WebView-context-menu.html

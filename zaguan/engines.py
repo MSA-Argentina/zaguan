@@ -25,10 +25,11 @@ class WebKitMethods(object):
                 context menu and inspector.
         """
         gi.require_version('WebKit', '3.0')
-        from gi.repository.WebKit import WebView, WebSettings, set_cache_model
+        from gi.repository.WebKit import (WebView, WebSettings,
+                                          set_cache_model, CacheModel)
 
         # http://lazka.github.io/pgi-docs/WebKit-3.0/functions.html#WebKit.set_cache_model
-        cache_model = WebView.CacheModel.WEBKIT_CACHE_MODEL_DOCUMENT_BROWSER
+        cache_model = CacheModel.DOCUMENT_BROWSER
         set_cache_model(cache_model)
 
         if debug:
@@ -88,11 +89,16 @@ class WebKitMethods(object):
         Arguments:
             browser -- a WebView instance.
         """
-        from zaguan_inspector import Inspector
+        ret = None
+        try:
+            from zaguan_inspector import Inspector
 
-        inspector = browser.get_inspector()
+            inspector = browser.get_inspector()
+            ret = Inspector(inspector)
+        except ImportError:
+            pass
 
-        return Inspector(inspector)
+        return ret
 
     @staticmethod
     def connect(browser, callback):

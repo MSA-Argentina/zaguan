@@ -10,7 +10,7 @@ except ImportError:
 
 setup(
     name='zaguan',
-    version='3.0.2',
+    version='3.0.3',
     author='Felipe Lerena',
     author_email='flerena@msa.com.ar',
     packages=['zaguan'],
@@ -20,7 +20,5 @@ setup(
     description='Front end framework to develop apps with webkit an pygtk',
     long_description=open('README.txt').read(),
     install_requires=[],
-    classifiers=[
-        "Development Status :: 4 - Beta"
-    ]
+    classifiers=[]
 )

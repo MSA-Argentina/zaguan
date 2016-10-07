@@ -3,7 +3,7 @@ from zaguan.functions import asynchronous_gtk_message
 
 
 def launch_browser(uri, debug=False, user_settings=None, window=None,
-                   webkit_version=None):
+                   webkit_version=None, debug_callback=None):
     """Creates and initialize a browser object.
 
     Arguments:
@@ -19,17 +19,21 @@ def launch_browser(uri, debug=False, user_settings=None, window=None,
 
     implementation.open_uri(browser, uri)
 
-    def web_send(msg):
+    def _web_send(msg):
         """Inyect some javascript anynchronously in the web view.
 
         Arguments:
             msg -- the javascript to run in the client;
         """
         if debug:
-            msg_len = 80
-            print('>>>', msg[:msg_len], "..." if len(msg) > msg_len else "")
+            if debug_callback is None:
+                msg_len = 80
+                print('>>>', msg[:msg_len],
+                      "..." if len(msg) > msg_len else "")
+            else:
+                debug_callback(msg)
 
         func = asynchronous_gtk_message(implementation.inject_javascript)
         func(browser, msg)
 
-    return browser, web_send, implementation
+    return browser, _web_send, implementation

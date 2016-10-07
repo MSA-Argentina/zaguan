@@ -47,7 +47,7 @@ class WebContainerController(object):
         self.send_function("run_op('%s', '%s')" % (command, json_data))
 
     def get_browser(self, uri, settings=None, debug=False,
-                    webkit_version=None):
+                    webkit_version=None, debug_callback=None):
         """Gets the browser objects and prpare it to bo able to be used in it's
         context.
 
@@ -67,7 +67,7 @@ class WebContainerController(object):
 
         browser, web_send, implementation = launch_browser(
             uri, debug=debug, user_settings=settings,
-            webkit_version=webkit_version)
+            webkit_version=webkit_version, debug_callback=debug_callback)
 
         self.send_function = web_send
         implementation.connect(browser, self.on_navigation_requested)

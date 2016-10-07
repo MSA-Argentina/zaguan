@@ -17,7 +17,7 @@ def get_wk_implementation(webkit_version):
 class WebKitMethods(object):
     """Methods for WebKit1."""
     @staticmethod
-    def create_browser(debug=False):
+    def create_browser(debug=False, cache_model=None, process_model=None):
         """Creates a WebView instance, properly configured.
 
         Arguments:
@@ -25,25 +25,21 @@ class WebKitMethods(object):
                 context menu and inspector.
         """
         gi.require_version('WebKit', '3.0')
-        from gi.repository.WebKit import (WebView, WebSettings,
-                                          set_cache_model, CacheModel)
-
-        # http://lazka.github.io/pgi-docs/WebKit-3.0/functions.html#WebKit.set_cache_model
-        cache_model = CacheModel.DOCUMENT_BROWSER
-        set_cache_model(cache_model)
+        from gi.repository.WebKit import WebView, WebSettings, set_cache_model
 
         if debug:
             WebKitMethods.print_version()
 
-        settings = WebSettings()
-        # Settings for webkitgtk http://webkitgtk.org/reference/webkitgtk/stable/WebKitWebSettings.html
+        if cache_model is not None:
+            # http://lazka.github.io/pgi-docs/WebKit-3.0/functions.html#WebKit.set_cache_model
+            set_cache_model(cache_model)
+
         # Setting for WebKit via git http://lazka.github.io/pgi-docs/#WebKit-3.0/classes/WebSettings.html
-        settings.set_property('enable-default-context-menu', False)
+        settings = WebSettings()
         settings.set_property('enable-accelerated-compositing', True)
         settings.set_property('enable-file-access-from-file-uris', True)
 
-        if debug:
-            settings.set_property('enable-default-context-menu', False)
+        settings.set_property('enable-default-context-menu', not debug)
 
         webview = WebView()
         webview.set_settings(settings)
@@ -123,7 +119,7 @@ class WebKitMethods(object):
 
 class WebKit2Methods(object):
     @staticmethod
-    def create_browser(debug=False):
+    def create_browser(debug=False, cache_model=None, process_model=None):
         """Creates a WebView instance, properly configured.
 
         Arguments:
@@ -131,8 +127,7 @@ class WebKit2Methods(object):
                 context menu and inspector.
         """
         gi.require_version('WebKit2', '4.0')
-        from gi.repository.WebKit2 import (WebView, Settings, CacheModel,
-                                           ProcessModel)
+        from gi.repository.WebKit2 import WebView, Settings
 
         if debug:
             WebKit2Methods.print_version()
@@ -144,12 +139,15 @@ class WebKit2Methods(object):
             settings.set_enable_write_console_messages_to_stdout(True)
         webview = WebView()
 
-        # http://lazka.github.io/pgi-docs/WebKit2-4.0/classes/WebContext.html#WebKit2.WebContext.set_cache_model
-        context = webview.get_context()
-        context.set_cache_model(CacheModel.DOCUMENT_BROWSER)
+        if cache_model is not None:
+            # http://lazka.github.io/pgi-docs/WebKit2-4.0/classes/WebContext.html#WebKit2.WebContext.set_cache_model
+            context = webview.get_context()
+            context.set_cache_model(cache_model)
 
-        # https://lazka.github.io/pgi-docs/WebKit2-4.0/classes/Settings.html#WebKit2.Settings.props.enable_page_cache
-        context.set_process_model(ProcessModel.SHARED_SECONDARY_PROCESS)
+        if process_model is not None:
+            # http://lazka.github.io/pgi-docs/WebKit2-4.0/classes/WebContext.html#WebKit2.WebContext.set_process_model
+            context = webview.get_context()
+            context.set_process_model(process_model)
 
         if not debug:
             # https://people.gnome.org/~gcampagna/docs/WebKit2-3.0/WebKit2.WebView-context-menu.html

@@ -141,6 +141,7 @@ class WebKit2Methods(object):
         settings.set_allow_file_access_from_file_urls(True)
         if debug:
             settings.set_enable_developer_extras(True)
+            settings.set_enable_write_console_messages_to_stdout(True)
         webview = WebView()
 
         # http://lazka.github.io/pgi-docs/WebKit2-4.0/classes/WebContext.html#WebKit2.WebContext.set_cache_model

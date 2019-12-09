@@ -15,9 +15,10 @@ class WebContainerController(object):
 
         The arguments change for both webkit versions.
         For webkit1 read:
-            http://lazka.github.io/pgi-docs/WebKit-3.0/classes/WebView.html#WebKit.WebView.signals.navigation_requested
+        `http://lazka.github.io/pgi-docs/WebKit-3.0/classes/WebView.html#WebKit.WebView.signals.navigation_requested`
         For webkit2 read:
-            http://lazka.github.io/pgi-docs/WebKit2-4.0/classes/WebView.html#WebKit2.WebView.signals.resource_load_started
+        `http://lazka.github.io/pgi-docs/WebKit2-4.0/classes/WebView.html#WebKit2.WebView.signals.resource_load_started`
+
         """
         uri = request.get_uri()
 
@@ -48,15 +49,16 @@ class WebContainerController(object):
 
     def get_browser(self, uri, settings=None, debug=False,
                     webkit_version=None, debug_callback=None):
-        """Gets the browser objects and prpare it to bo able to be used in it's
+        """
+        Gets the browser objects and prpare it to bo able to be used in it's
         context.
 
         Arguments:
-            uri -- the URI of the HTML to open with the web view.
-            settings -- the settings send to webkit.
-            debug -- boolean to indicate if it should output debug and add
-                context menu and inspector.
-            webkit_version -- the webkit gtk version (1 or 2)
+            uri (str): the URI of the HTML to open with the web view.
+            settings (list): the settings send to webkit.
+            debug (boolean):
+                to indicate if it should output debug and add context menu and inspector.
+            webkit_version (int): the webkit gtk version (1 or 2)
         """
         if settings is None:
             settings = []

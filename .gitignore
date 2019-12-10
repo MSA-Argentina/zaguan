@@ -3,3 +3,7 @@
 *.swp
 .ropeproject
 dist/
+
+docs/_build
+
+.idea/

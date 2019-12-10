@@ -1,4 +1,4 @@
-zaguan\.examples\.colors\.actions module
+actions
 ========================================
 
 .. automodule:: zaguan.examples.colors.actions

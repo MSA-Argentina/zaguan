@@ -1,4 +1,4 @@
-zaguan\.examples package
+examples
 ========================
 
 Subpackages

@@ -1,4 +1,4 @@
-zaguan\.examples\.colors package
+colors
 ================================
 
 Submodules

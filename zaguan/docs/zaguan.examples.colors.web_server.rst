@@ -1,4 +1,4 @@
-zaguan\.examples\.colors\.web\_server module
+web\_server
 ============================================
 
 .. automodule:: zaguan.examples.colors.web_server

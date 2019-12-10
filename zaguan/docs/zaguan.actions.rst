@@ -1,4 +1,4 @@
-zaguan\.actions module
+actions
 ======================
 
 .. automodule:: zaguan.actions

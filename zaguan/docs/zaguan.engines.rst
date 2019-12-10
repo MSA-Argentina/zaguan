@@ -1,4 +1,4 @@
-zaguan\.engines module
+engines
 ======================
 
 .. automodule:: zaguan.engines

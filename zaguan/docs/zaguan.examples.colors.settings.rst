@@ -1,4 +1,4 @@
-zaguan\.examples\.colors\.settings module
+settings
 =========================================
 
 .. automodule:: zaguan.examples.colors.settings

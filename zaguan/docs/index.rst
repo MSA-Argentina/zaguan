@@ -47,7 +47,7 @@ Table of contents
 .. toctree::
    :maxdepth: 2
 
-    Some examples<zaguan.examples>
+    Some examples <zaguan.examples>
     Modulos <modules>
 
 Indices and tables

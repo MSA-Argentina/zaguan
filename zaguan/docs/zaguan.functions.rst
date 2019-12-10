@@ -1,4 +1,4 @@
-zaguan\.functions module
+functions
 ========================
 
 .. automodule:: zaguan.functions

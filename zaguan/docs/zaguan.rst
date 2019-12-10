@@ -1,4 +1,4 @@
-zaguan package
+zaguan
 ==============
 
 Subpackages

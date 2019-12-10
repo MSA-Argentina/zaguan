@@ -1,4 +1,4 @@
-zaguan\.container module
+container
 ========================
 
 .. automodule:: zaguan.container

@@ -1,4 +1,4 @@
-zaguan\.examples\.colors\.controller module
+controller
 ===========================================
 
 .. automodule:: zaguan.examples.colors.controller

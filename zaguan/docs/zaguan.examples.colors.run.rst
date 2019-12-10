@@ -1,4 +1,4 @@
-zaguan\.examples\.colors\.run module
+run
 ====================================
 
 .. automodule:: zaguan.examples.colors.run

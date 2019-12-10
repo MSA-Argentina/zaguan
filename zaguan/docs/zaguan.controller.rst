@@ -1,4 +1,4 @@
-zaguan\.controller module
+controller
 =========================
 
 .. automodule:: zaguan.controller

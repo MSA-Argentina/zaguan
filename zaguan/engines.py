@@ -2,10 +2,10 @@ import gi
 
 
 def get_wk_implementation(webkit_version):
-    """Returns the Zaguan webkit wrapper.
+    """Retorna el webkit wrapper de Zaguan segun la version.
 
     Arguments:
-        webkit_version -- a number representing the version.
+        webkit_version (int): la version de webkit a usar. Puede ser 1 o 2.
     """
     implementation = WebKit2Methods
     if webkit_version == 1:
@@ -15,14 +15,18 @@ def get_wk_implementation(webkit_version):
 
 
 class WebKitMethods(object):
-    """Methods for WebKit1."""
+    """Clase que implementa métodos estaticos para la version 1 de WebKit."""
     @staticmethod
     def create_browser(debug=False, cache_model=None, process_model=None):
-        """Creates a WebView instance, properly configured.
+        """Crea la instancia de :class:`WebView <WebKit2.WebView>` y la configura correctamente.
 
-        Arguments:
-            debug -- boolean to indicate if it should output debug and add
-                context menu and inspector.
+        Parameters:
+            debug (bool): indica si se debe abrir herramientas para desarrollador.
+            cache_model (CacheModel): indica el comportamiento de la cache del browser.
+            process_model: sin uso.
+
+        Returns:
+            WebView: la instancia de ``WebView`` configurada.
         """
         gi.require_version('WebKit', '3.0')
         from gi.repository.WebKit import WebView, WebSettings, set_cache_model
@@ -47,31 +51,31 @@ class WebKitMethods(object):
 
     @staticmethod
     def inject_javascript(browser, script):
-        """Injects JS on a WebView object.
+        """Injecta JavaScript en un objeto ``WebView``.
 
-        Arguments:
-            browser -- the WebView target.
-            script -- the code to run.
+        Parameters:
+            browser (WebView): el objeto ``WebView`` destino.
+            script (str): el script JS a correr.
         """
         browser.execute_script(script)
 
     @staticmethod
     def open_uri(browser, uri):
-        """Opens a uri in the browser.
+        """Abre una URI en el browser.
 
-        Arguments:
-            browser -- the WebView target.
-            uri -- the uri to open.
+        Parameters:
+            browser (WebView): el objeto ``WebView`` destino.
+            uri (str): la URI del contenido a abrir en el browser.
         """
         browser.open(uri)
 
     @staticmethod
     def set_settings(browser, user_settings):
-        """Adds the settings to the browser settings.
+        """Agrega las settings al browser.
 
-        Arguments:
-            browser -- a WebView instance.
-            user_settings -- the settings to add to the browser.
+        Parameters:
+            browser (WebView): el objeto ``WebView`` destino.
+            user_settings: las settings a agregar al browser.
         """
         browser_settings = browser.get_settings()
         if user_settings is not None:
@@ -80,10 +84,13 @@ class WebKitMethods(object):
 
     @staticmethod
     def get_inspector(browser):
-        """Gets the inspector instance.
+        """Obtiene el Inspector de la instancia de ``WebKit``.
 
-        Arguments:
-            browser -- a WebView instance.
+        Parameters:
+            browser (WebView): el objeto ``WebView`` destino.
+
+        Returns:
+            Inspector: el inspector de zaguan.
         """
         ret = None
         try:
@@ -98,18 +105,17 @@ class WebKitMethods(object):
 
     @staticmethod
     def connect(browser, callback):
-        """Connects the navigation event to the browser.
+        """Conecta el evento de navegación al browser.
 
-
-        Arguments:
-            browser -- a WebView instance.
-            callback -- the callback function.
+        Parameters:
+            browser (WebView): el objeto ``WebView`` destino.
+            callback (function): la función callback.
         """
         browser.connect("resource-request-starting", callback)
 
     @staticmethod
     def print_version():
-        """Prints the WebKit version."""
+        """Hace un print con la version de WebKit."""
         from gi.repository.WebKit import (major_version, minor_version,
                                           micro_version)
         version = "{}.{}.{}".format(major_version(), minor_version(),
@@ -118,13 +124,18 @@ class WebKitMethods(object):
 
 
 class WebKit2Methods(object):
+    """Clase que implementa métodos estaticos para la version 2 de WebKit."""
     @staticmethod
     def create_browser(debug=False, cache_model=None, process_model=None):
-        """Creates a WebView instance, properly configured.
+        """Crea la instancia de :class:`WebView <WebKit2.WebView>` y la configura correctamente.
 
-        Arguments:
-            debug -- boolean to indicate if it should output debug and add
-                context menu and inspector.
+        Parameters:
+            debug (bool): indica si se debe abrir herramientas para desarrollador.
+            cache_model (WebKit2.CacheModel): indica el comportamiento de la cache del browser.
+            process_model: sin uso.
+
+        Returns:
+            WebKit2.WebView: la instancia de ``WebKit2.WebView`` configurada.
         """
         gi.require_version('WebKit2', '4.0')
         from gi.repository.WebKit2 import WebView, Settings
@@ -161,31 +172,31 @@ class WebKit2Methods(object):
 
     @staticmethod
     def inject_javascript(browser, script):
-        """Injects JS on a WebView object.
+        """Injecta JavaScript en un objeto :class:`WebKit2.WebView`.
 
-        Arguments:
-            browser -- the WebView target.
-            script -- the code to run.
+        Parameters:
+            browser (WebKit2.WebView): el objeto ``WebView`` destino.
+            script (str): el script JS a correr.
         """
         browser.run_javascript(script)
 
     @staticmethod
     def open_uri(browser, uri):
-        """Opens a uri in the browser.
+        """Abre una URI en el browser.
 
-        Arguments:
-            browser -- the WebView target.
-            uri -- the uri to open.
+        Parameters:
+            browser (WebKit2.WebView): el objeto ``WebView`` destino.
+            uri (str): la URI del contenido a abrir en el browser.
         """
         browser.load_uri(uri)
 
     @staticmethod
     def set_settings(browser, user_settings):
-        """Adds the settings to the browser settings.
+        """Agrega las settings al browser.
 
-        Arguments:
-            browser -- a WebView instance.
-            user_settings -- the settings to add to the browser.
+        Parameters:
+            browser (WebKit2.WebView): el objeto ``WebView`` destino.
+            user_settings: las settings a agregar al browser.
         """
         browser_settings = browser.get_settings()
         if user_settings is not None:
@@ -194,18 +205,17 @@ class WebKit2Methods(object):
 
     @staticmethod
     def connect(browser, callback):
-        """Connects the navigation event to the browser.
+        """Conecta el evento de navegación al browser.
 
-
-        Arguments:
-            browser -- a WebView instance.
-            callback -- the callback function.
+        Parameters:
+            browser (WebKit2.WebView): el objeto ``WebView`` destino.
+            callback (function): la función callback.
         """
         browser.connect("resource-load-started", callback)
 
     @staticmethod
     def print_version():
-        """Prints the WebKit version."""
+        """Hace un print con la version de WebKit."""
         from gi.repository.WebKit2 import (get_major_version,
                                            get_minor_version,
                                            get_micro_version)

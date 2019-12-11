@@ -5,19 +5,31 @@ from zaguan.container import launch_browser
 
 
 class WebContainerController(object):
-    """Base class for the web containers of the controllers."""
+    """
+    Clase base para los controladores de contenedores web. Controla la interaccion con el browser en ambas direcciones.
+
+
+    Attributes:
+        processors (list): lista de procesadores.
+        inspector (ZaguanInspector): se instancia solo cuando se usa WebKit version 1.
+
+    """
     def __init__(self):
+        """
+        Constructor de la clase. Inicializa :attr:`WebContainerController.processors` con una lista vacía.
+        """
         self.processors = []
 
     def on_navigation_requested(self, webview, resource, request, *args):
-        """This is the Callback executed each time an URI inside the webkit
-        object is loaded.
+        """
+        Este es el método que se ejecuta cada vez que en el browser se pide cargar una URI. Llama
+        a :meth:`WebContainerController.process_uri() <WebContainerController.process_uri>` con la URI que obtiene de
+        la request que se pasa como parametro.
 
-        The arguments change for both webkit versions.
-        For webkit1 read:
-        `http://lazka.github.io/pgi-docs/WebKit-3.0/classes/WebView.html#WebKit.WebView.signals.navigation_requested`
-        For webkit2 read:
-        `http://lazka.github.io/pgi-docs/WebKit2-4.0/classes/WebView.html#WebKit2.WebView.signals.resource_load_started`
+        Los argumentos cambian segun la version de WebKit:
+
+        * Version 1: no existe documentacion.
+        * Version 2: http://lazka.github.io/pgi-docs/WebKit2-4.0/classes/WebView.html#WebKit2.WebView.signals.resource_load_started
 
         """
         uri = request.get_uri()
@@ -25,24 +37,29 @@ class WebContainerController(object):
         self.process_uri(uri)
 
     def process_uri(self, uri):
-        """Procces the url on each processor.
+        """Por cada procesador registrado manda a procesar la URI.
 
-        Arguments:
-            uri -- the URI to process.
+        Parameters:
+            uri (str): la URI a procesar.
         """
         for processor in self.processors:
             processor(uri)
 
     def set_screen(self, screen, **kwargs):
-        """Sends the change sreen command to the web interface."""
+        """Envia el comando 'change_screep' al broswer.
+
+        Parameters:
+            screen (str): pantalla a la que se quiere cambiar.
+            kargs: otros argumentos
+        """
         self.send_command("change_screen", [screen, kwargs])
 
     def send_command(self, command, data=None):
-        """Inyects the JS in the browser for the givven command.
+        """ Inyecta la ejecucion de un comando en el browser.
 
-        Arguments:
-            command -- the command you want to send to the UI.
-            data -- the data you want to send as the command argument.
+        Parameters:
+            command (str): el comando a ejecutar en el browser.
+            data (any): los datos que se envian como parametros del comando.
         """
         json_data = dumps(data).replace("\\\"", "\\\'")
         self.send_function("run_op('%s', '%s')" % (command, json_data))
@@ -50,8 +67,9 @@ class WebContainerController(object):
     def get_browser(self, uri, settings=None, debug=False,
                     webkit_version=None, debug_callback=None):
         """
-        Gets the browser objects and prpare it to bo able to be used in it's
-        context.
+        Obtiene el browser, el metodo para inyectar JS y la implementacion del wrapper de WebKit. Conecta el método
+        :meth:`WebContainerController.on_navigation_requested <WebContainerController.on_navigation_requested>` al
+        evento ``resource-request-starting`` del browser, esto es para poder atender a nuevas peticiones de URI.
 
         Arguments:
             uri (str): the URI of the HTML to open with the web view.
@@ -59,6 +77,9 @@ class WebContainerController(object):
             debug (boolean):
                 to indicate if it should output debug and add context menu and inspector.
             webkit_version (int): the webkit gtk version (1 or 2)
+
+        Returns:
+            WebKit2.WebView: el objeto ``WebView``
         """
         if settings is None:
             settings = []
@@ -80,14 +101,29 @@ class WebContainerController(object):
         return browser
 
     def add_processor(self, url_word, instance=None):
-        """Adds the processor to the browser."""
+        """
+        Agrega un procesador al browser. Un procesador es una instancia de la funcion  .Enlaza una URI con un
+        :class:`BaseActionController <zaguan.actions.BaseActionController>` para que desde el browser se pueda llamar
+        a metodos de Python.
+
+        Parameters:
+            url_word (str): clave que linkea un
+
+        .. function:: add_processor._inner(uri)
+
+            Procesa una URI y la divide en dos partes: el nombre del método y los datos (parámetros a pasar al metodo).
+            Busca el método en una instancia de :class:`BaseActionController <zaguan.actions.BaseActionController>`
+            y si existe lo ejecuta.
+
+            :param uri: la URI a parsear.
+            :type uri: str
+            :raise NotImplementedError:
+                excepcion que se lanza cuando el método que está llamando el browser no fué
+                implementado en la instancia de :class:`BaseActionController <zaguan.actions.BaseActionController>`.
+
+        """
 
         def _inner(uri):
-            """Processes the url and calls for the instance.
-
-            Arguments:
-                uri -- the URI to parse.
-            """
             scheme, path = uri.split(':', 1)
             if scheme == "http":
                 parts = path.split("/")[2:]

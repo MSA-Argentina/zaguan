@@ -4,6 +4,6 @@
 .ropeproject
 dist/
 
-docs/_build
+zaguan/docs/_build
 
 .idea/

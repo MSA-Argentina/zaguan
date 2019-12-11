@@ -45,10 +45,10 @@ Other requirements
 Table of contents
 =================
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
 
-    Some examples <zaguan.examples>
     Modulos <modules>
+    Some examples <zaguan.examples>
 
 Indices and tables
 ==================

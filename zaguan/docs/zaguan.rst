@@ -1,13 +1,6 @@
 zaguan
 ==============
 
-Subpackages
------------
-
-.. toctree::
-
-    zaguan.docs
-
 Submodules
 ----------
 

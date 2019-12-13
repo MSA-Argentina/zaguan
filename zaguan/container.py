@@ -12,7 +12,7 @@ def launch_browser(uri, debug=False, user_settings=None, window=None,
         window (Gtk.Window): objeto al que se le va a injetar el browser.
         webkit_version (int): la version de webit a usar. Puede ser 1 o 2.
 
-    .. Note::
+    .. todo::
         El contenido de esta funcion podría ir directamente dentro del método
         :meth:`WebContainerController.get_browser() <zaguan.controller.WebContainerController.get_browser>` ya
         que es el unico punto donde se usa.

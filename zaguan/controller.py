@@ -71,6 +71,9 @@ class WebContainerController(object):
         :meth:`WebContainerController.on_navigation_requested <WebContainerController.on_navigation_requested>` al
         evento ``resource-request-starting`` del browser, esto es para poder atender a nuevas peticiones de URI.
 
+        .. todo::
+            Esto debería ser tarea del constructor. ``get_browser`` solo debería devolver el browser.
+
         Arguments:
             uri (str): the URI of the HTML to open with the web view.
             settings (list): the settings send to webkit.

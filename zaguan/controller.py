@@ -105,18 +105,23 @@ class WebContainerController(object):
 
     def add_processor(self, url_word, instance=None):
         """
-        Agrega un procesador al browser. Un procesador es una instancia de la funcion  .Enlaza una URI con un
-        :class:`BaseActionController <zaguan.actions.BaseActionController>` para que desde el browser se pueda llamar
-        a metodos de Python.
+        Agrega una instancia de la funcion ``_inner`` a la lista de procesadores para que desde el browser se
+        pueda llamar a metodos de Python. Para mas detalles ver la documentacion de
+        :meth:`_inner() <add_processor._inner>`.
 
         Parameters:
-            url_word (str): clave que linkea un
+            url_word (str):
+                Clave que linkea una URI con el procesador ``instance``.
+            instance (zaguan.actions.BaseActionController):
+                Una instancia de ``BaseActionController`` que debe tener implementados los metodos que se intentaran
+                ejecutar desde el browser para la URI.
 
         .. function:: add_processor._inner(uri)
 
-            Procesa una URI y la divide en dos partes: el nombre del método y los datos (parámetros a pasar al metodo).
-            Busca el método en una instancia de :class:`BaseActionController <zaguan.actions.BaseActionController>`
-            y si existe lo ejecuta.
+            Si alguna parte de la URI coincide con ``url_word`` entonces procesa el texto restante
+            y lo divide en dos partes: el nombre del método y los datos (parámetros a pasar al metodo).
+            Busca el método en la instancia de :class:`BaseActionController <zaguan.actions.BaseActionController>`
+            (``instance``) y si existe lo ejecuta.
 
             :param uri: la URI a parsear.
             :type uri: str

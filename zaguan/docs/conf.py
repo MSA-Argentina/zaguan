@@ -31,7 +31,8 @@ sys.path.insert(0, os.path.abspath('../../zaguan/examples/colors'))
 extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.autosummary',
               'sphinx.ext.napoleon',
-              'sphinx.ext.intersphinx'
+              'sphinx.ext.intersphinx',
+              'sphinx.ext.todo'
               ]
 
 napoleon_include_init_with_doc = True
@@ -87,6 +88,8 @@ release = '3.2.0'
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 exclude_patterns = ['_build']
+
+todo_include_todos = False
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 #default_role = None
